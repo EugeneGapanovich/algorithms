@@ -14,7 +14,7 @@ import by.gapanovich.algorithms.reader.InfoReader;
 import java.util.Arrays;
 
 public class Main {
-    static final int COUNT_ELEMENTS = 25;
+    static final int COUNT_ELEMENTS = 8_000_000;
     static final int START = 1;
     static final int END = 100;
     static final int LEFT = 0;
@@ -22,21 +22,29 @@ public class Main {
     public static void main(String[] args) {
         ArrayCreator arrayCreator = new ArrayCreator();
         int[] arrayNumbers = arrayCreator.createArray(COUNT_ELEMENTS);
-        arrayNumbers = arrayCreator.fillArrayFromInterval(START, END, arrayNumbers);
+        //arrayNumbers = arrayCreator.fillArrayFromInterval(START, END, arrayNumbers);
+
+        for (int i = 0; i < COUNT_ELEMENTS; i++) {
+            arrayNumbers[i] = i + 1;
+        }
 
         ArrayClass arrayClass = new ArrayClass();
-        arrayClass.print(arrayNumbers);
-        Arrays.sort(arrayNumbers);
-        arrayClass.printWithIndexes(arrayNumbers);
+        //arrayClass.print(arrayNumbers);
+        //Arrays.sort(arrayNumbers);
+        //arrayClass.printWithIndexes(arrayNumbers);
         AlgorithmClass algorithm = new AlgorithmClass();
         InfoReader reader = new InfoReader();
-        System.out.println("Enter key:");
-        int key = reader.readIntegerNumber(System.in);
-        int position = algorithm.recursiveDichotomousSearch(arrayNumbers, LEFT, arrayNumbers.length-1, key);
+        //System.out.println("Enter key:");
+        //int key = reader.readIntegerNumber(System.in);
+        long startTime = System.nanoTime();
+        int position = algorithm.recursiveDichotomousSearch(arrayNumbers, LEFT, arrayNumbers.length-1, 1);
+        long endTime = System.nanoTime();
+        long leadTime = endTime - startTime;
+        System.out.println("Lead time=" + leadTime);
         if (position == -1){
             System.out.println("There is no such key");
         } else {
-            System.out.println("Key " + key + " found at number " + position);
+            System.out.println("Key " + 1 + " found at number " + position);
         }
     }
 }

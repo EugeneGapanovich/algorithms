@@ -51,9 +51,15 @@ public class Main {
         arrayClass.printWithIndexes(arrayNumbers);
         AlgorithmClass algorithm = new AlgorithmClass();
         long startTime = System.nanoTime();
-        System.out.println(algorithm.dichotomousSearch(arrayNumbers, key));
+        int position = algorithm.dichotomousSearch(arrayNumbers, key);
         long endTime = System.nanoTime();
-        System.out.println("Lead time=" + (endTime - startTime));
+        long leadTime = endTime - startTime;
+        if (position == -1){
+            System.out.println("There is no such key");
+        }else{
+            System.out.println("Key " + key + " found at number " + position);
+        }
+        System.out.println("Lead time=" + leadTime);
 
     }
 }
