@@ -15,11 +15,13 @@ import by.gapanovich.algorithms.classes.BinaryTree;
 import by.gapanovich.algorithms.classes.Node;
 import by.gapanovich.algorithms.creator.BinaryTreeCreator;
 
+
 public class Main {
     static final int COUNT_ELEMENTS = 12;
     static final int START = 0;
     static final int END = 80;
-    static final int KEY = 50;
+    static final int KEY = 12;
+
     public static void main(String[] args) {
         BinaryTreeCreator binaryTreeCreator = new BinaryTreeCreator();
         BinaryTree binaryTree = binaryTreeCreator.createBinaryTree(START,END,COUNT_ELEMENTS);
@@ -28,8 +30,11 @@ public class Main {
         BinaryTreeAlgorithms binaryTreeAlgorithm = new BinaryTreeAlgorithms();
         binaryTreeAlgorithm.symmetricTraversal(binaryTree.getRoot());
 
+        long startTime = System.nanoTime();
         Node key = binaryTreeAlgorithm.search(binaryTree.getRoot(), KEY);
-        System.out.println();
-        System.out.println("Key nearby from above:" + key.getValue());
+        long endTime = System.nanoTime();
+        long leadTime = endTime - startTime;
+        System.out.println("\nKey nearby from above:" + key.getValue());
+        System.out.println("Lead time=" + leadTime);
     }
 }
