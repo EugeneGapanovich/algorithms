@@ -3,10 +3,10 @@ import random
 import time
 
 degree = 5
-count_nodes = 60000
+count_nodes = 12
 start = 0
 end = 80
-key = 59999
+key = 15
 
 print('Initializing B+ tree with degree=', count_nodes)
 bPlusTree = BPlusTree(degree)
@@ -14,15 +14,14 @@ bPlusTree = BPlusTree(degree)
 print("Filling tree:")
 
 counter = 0
-for i in range(count_nodes):
-    #random_value = random.randint(start, end)
-    #bPlusTree.insert(random_value, "Value" + str(random_value))
-    bPlusTree.insert(i, "Value" + str(i))
-    i += 1
+while counter < count_nodes:
+    random_value = random.randint(start, end)
+    bPlusTree.insert(random_value, "Value" + str(random_value))
+    counter += 1
 
 
 print("Printing BPlusTree:")
-#bPlusTree.show()
+bPlusTree.show()
 
 print('\nRetrieving values with key ', key)
 start_time = time.time()
