@@ -80,17 +80,21 @@ public class Main extends JPanel {
                 {1,1,0,1,0,0},
                 {0,0,0,1,0,0}
         };
-
-
         Graph firstGraph = new Graph(adj, adj.length);
         firstGraph.printGraph();
+        System.out.println("Incidence matrix:");
         MatrixPrinter.printMatrix(firstGraph.writeIncidenceMatrix());
+        System.out.println("Adjacency matrix:");
+        MatrixPrinter.printMatrix(firstGraph.writeAdjacencyMatrix());
+        System.out.println("Adjacency list:");
+        MatrixPrinter.printMatrix(firstGraph.writeAdjacencyList());
+        System.out.println("Edges list:");
+        MatrixPrinter.printEdgesArray(firstGraph.writeEdges());
 
 
 
         Main.graph = firstGraph;
         Main.matrix = firstGraph.writeAdjacencyMatrix();
-
         htd.repaint();
 
         Thread.sleep(1500);
@@ -100,7 +104,18 @@ public class Main extends JPanel {
         Edge edge = new Edge(graph.getVertices()[0], graph.getVertices()[graph.getVertices().length-1]);
         firstGraph.addEdge(edge);
         firstGraph.printGraph();
+        System.out.println("Incidence matrix:");
         MatrixPrinter.printMatrix(firstGraph.writeIncidenceMatrix());
+        System.out.println("Adjacency matrix:");
+        MatrixPrinter.printMatrix(firstGraph.writeAdjacencyMatrix());
+        System.out.println("Adjacency list:");
+        MatrixPrinter.printMatrix(firstGraph.writeAdjacencyList());
+        System.out.println("Edges list:");
+        MatrixPrinter.printEdgesArray(firstGraph.writeEdges());
+
+        System.out.println("Width graph traversal");
+        char[] bfs = firstGraph.breadthFirstSearch(firstGraph.writeAdjacencyMatrix());
+        System.out.println(bfs);
         Main.graph = firstGraph;
         Main.matrix = firstGraph.writeAdjacencyMatrix();
 

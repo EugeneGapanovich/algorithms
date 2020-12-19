@@ -30,4 +30,12 @@ public class Edge {
     public Vertex getToVertex(){
         return toVertex;
     }
+
+    @Override
+    public String toString() {
+        return "[" +
+                 fromVertex.getName() +
+                "," + toVertex.getName() +
+                ']';
+    }
 }

@@ -1,19 +1,28 @@
 package by.gapanovich.algorithms.Printer;
 
+import by.gapanovich.algorithms.Classes.Edge;
+
 public class MatrixPrinter {
     public static void printMatrix(int[]matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            System.out.print(matrix[i] + ";");
+        for (int value : matrix) {
+            System.out.print(value + ";");
         }
         System.out.println();
     }
 
     public static void printMatrix(int[][]matrix){
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j] + ";");
+        for (int[] ints : matrix) {
+            for (int anInt : ints) {
+                System.out.print(anInt + ";");
             }
             System.out.println();
         }
+    }
+
+    public static void printEdgesArray(Edge[] edges){
+        for (Edge edge : edges) {
+            System.out.println(edge.toString());
+        }
+        System.out.println();
     }
 }

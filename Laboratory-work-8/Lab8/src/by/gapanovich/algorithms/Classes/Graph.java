@@ -3,6 +3,7 @@ package by.gapanovich.algorithms.Classes;
 import by.gapanovich.algorithms.validator.EdgeValidator;
 import by.gapanovich.algorithms.validator.GraphValidator;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class Graph {
@@ -13,6 +14,8 @@ public class Graph {
             'F','G','H','I','G','K','L',
             'M','N','O','P','Q','R','S',
             'T','U','V','W','X','Y','Z'};
+
+    private boolean[] isVisited;
 
     public Graph(Graph graph) {
         this.vertices = graph.getVertices();
@@ -275,6 +278,40 @@ public class Graph {
         return edges;
     }
 
+    private int getIndexNextVertex(int indexVertex, int[][] adjacencyMatrix){
+        int resultIndex = -1;
+        for(int index = 0; index < adjacencyMatrix[indexVertex].length; index++){
+            if(adjacencyMatrix[indexVertex][index] == 1 && !this.isVisited[index]){
+                resultIndex = index;
+                break;
+            }
+        }
+        return resultIndex;
+    }
+
+    public char[] breadthFirstSearch(int[][] adjacencyMatrix){
+        char[] result = new char[this.vertices.length];
+        int[] indexes = new int[this.vertices.length];
+        int[][] matrix = adjacencyMatrix;
+        this.isVisited = new boolean[this.vertices.length];
+        Arrays.fill(this.isVisited, false);
+        int cursor = 0;
+        int count = 0;
+        int nextIndex;
+        this.isVisited[count] = true;
+        indexes[cursor] = 0;
+        result[count] = this.vertices[count++].getName();
+        while (count < result.length) {
+            while ((nextIndex = getIndexNextVertex(indexes[cursor], matrix)) != -1) {
+                this.isVisited[nextIndex] = true;
+                indexes[count] = nextIndex;
+                result[count++] = this.vertices[nextIndex].getName();
+            }
+            cursor++;
+        }
+
+        return result;
+    }
 
     public void printGraph(){
         System.out.print("Vertex's: ");
