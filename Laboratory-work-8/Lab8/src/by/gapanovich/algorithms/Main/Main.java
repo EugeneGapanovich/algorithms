@@ -91,8 +91,6 @@ public class Main extends JPanel {
         System.out.println("Edges list:");
         MatrixPrinter.printEdgesArray(firstGraph.writeEdges());
 
-
-
         Main.graph = firstGraph;
         Main.matrix = firstGraph.writeAdjacencyMatrix();
         htd.repaint();
@@ -101,8 +99,9 @@ public class Main extends JPanel {
 
         Vertex vertex = new Vertex('X');
         firstGraph.addVertex(vertex);
-        Edge edge = new Edge(graph.getVertices()[0], graph.getVertices()[graph.getVertices().length-1]);
+        Edge edge = new Edge(firstGraph.getVertices()[0], firstGraph.getVertices()[firstGraph.getVertices().length-1]);
         firstGraph.addEdge(edge);
+
         firstGraph.printGraph();
         System.out.println("Incidence matrix:");
         MatrixPrinter.printMatrix(firstGraph.writeIncidenceMatrix());
@@ -116,6 +115,9 @@ public class Main extends JPanel {
         System.out.println("Width graph traversal");
         char[] bfs = firstGraph.breadthFirstSearch(firstGraph.writeAdjacencyMatrix());
         System.out.println(bfs);
+
+        firstGraph.greedyColoring(firstGraph.writeAdjacencyList());
+
         Main.graph = firstGraph;
         Main.matrix = firstGraph.writeAdjacencyMatrix();
 

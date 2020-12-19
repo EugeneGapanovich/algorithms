@@ -327,4 +327,32 @@ public class Graph {
         System.out.println();
     }
 
+    public void greedyColoring(int[][] adjacencyList){
+        int[] result = new int[this.vertices.length];
+        Arrays.fill(result, -1);
+        result[0] = 0;
+        boolean[] available = new boolean[this.vertices.length];
+        Arrays.fill(available, true);
+
+        for (int u = 1; u < this.vertices.length; u++){
+
+            for(int i = 0; i < adjacencyList[u].length; i++){
+                if(result[adjacencyList[u][i]-1] != -1) {
+                    available[result[adjacencyList[u][i]-1]] = false;
+                }
+            }
+
+            int cr;
+            for(cr = 0; cr < this.vertices.length; cr++){
+                if (available[cr])
+                    break;
+            }
+            result[u] = cr;
+        }
+
+        for (int u = 0; u < this.vertices.length; u++)
+            System.out.println("Vertex " + this.vertices[u].getName() + " --->  Color "
+                    + result[u]);
+    }
+
 }
