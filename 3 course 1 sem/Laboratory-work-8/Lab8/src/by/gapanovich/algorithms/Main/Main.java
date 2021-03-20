@@ -95,7 +95,7 @@ public class Main extends JPanel {
         Main.matrix = firstGraph.writeAdjacencyMatrix();
         htd.repaint();
 
-        Thread.sleep(1500);
+        Thread.sleep(2500);
 
         Vertex vertex = new Vertex('X');
         firstGraph.addVertex(vertex);
