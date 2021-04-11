@@ -49,9 +49,11 @@ public class Main extends JPanel {
         System.out.println("\nVertices and edges:");
         MatrixPrinter.printVerticesAndEdges(graph.getVertices(), graph.writeEdges());
 
-        System.out.println("Greedy coloring");
+        System.out.println("\nGreedy coloring");
         graph.greedyColoring(graph.writeAdjacencyList());
 
+        System.out.println("\nColoring by manipulating rows in adjacency list");
+        graph.coloringByManipulatingRows(graph.writeAdjacencyMatrix());
     }
 
     @Override

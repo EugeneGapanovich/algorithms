@@ -1,5 +1,6 @@
 package by.gapanovich.algorithms.Classes;
 
+import by.gapanovich.algorithms.Printer.MatrixPrinter;
 import by.gapanovich.algorithms.validator.EdgeValidator;
 import by.gapanovich.algorithms.validator.GraphValidator;
 
@@ -354,6 +355,73 @@ public class Graph {
         }
     }
 
+    public void coloringByManipulatingRows(int[][] adjacencyMatrix) {
+        for (int i = 0; i < adjacencyMatrix[0].length; i++) {
+            for (int j = 0; j < adjacencyMatrix.length; j++) {
+                if (i == j) {
+                    adjacencyMatrix[i][j] = 1;
+                }
+            }
+        }
+
+        boolean[] availableRows = new boolean[this.vertices.length];
+        Arrays.fill(availableRows, true);
+        int[] colors = new int[this.vertices.length];
+        Arrays.fill(colors, -1);
+        int color = 0;
+        boolean continueCycle = true;
+
+        for (int i = 0; i < this.vertices.length; i++) {
+            if(availableRows[i]){
+                while(isExistZeroInRow(adjacencyMatrix,i) && continueCycle) {
+                    int j = getIndexZeroInRow(adjacencyMatrix, i);
+                    if (availableRows[j]) {
+                        for (int k = 0; k < this.vertices.length; k++) {
+                            if (adjacencyMatrix[i][k] == 1 && adjacencyMatrix[j][k] == 1) {
+                                adjacencyMatrix[i][k] = 1;
+                            } else {
+                                adjacencyMatrix[i][k] = adjacencyMatrix[i][k] + adjacencyMatrix[j][k];
+                            }
+                        }
+                        availableRows[j] = false;
+                        colors[j] = color;
+                    } else {
+                        continueCycle = false;
+                    }
+                }
+                colors[i] = color;
+                availableRows[i] = false;
+                color += 1;
+            }
+        }
+
+        for (int i = 0; i < this.vertices.length; i++) {
+            System.out.println("Vertex " + this.vertices[i].getName() + " --->  Color "
+                    + colors[i]);
+        }
+
+    }
+
+    private boolean isExistZeroInRow(int[][] adjacencyMatrix, int indexRow){
+        for (int i = 0; i < this.vertices.length; i++){
+            if(adjacencyMatrix[indexRow][i] == 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int getIndexZeroInRow(int[][] adjacencyMatrix, int indexRow){
+        int index = -1;
+        for (int i = 0; i < this.vertices.length; i++){
+            if(adjacencyMatrix[indexRow][i] == 0){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
     private int getIdVertexMaxDegree(int[][] degrees) {
         int idVertex = -1;
         int maxVertexDegree = -1;
@@ -418,4 +486,6 @@ public class Graph {
         }
         return exist;
     }
+
+
 }
