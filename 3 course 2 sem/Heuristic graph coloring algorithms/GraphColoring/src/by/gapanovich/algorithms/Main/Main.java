@@ -26,7 +26,7 @@ public class Main extends JPanel {
 
     public static void main(String[] args) throws InterruptedException {
 
-        int[][] adj = {
+        int[][] adjOne = {
                 {0, 0, 0, 0, 0, 1, 1}, // 1
                 {0, 0, 1, 0, 1, 1, 0}, // 2
                 {0, 1, 0, 1, 0, 0, 0}, // 3
@@ -35,7 +35,7 @@ public class Main extends JPanel {
                 {1, 1, 0, 1, 1, 0, 1}, // 6
                 {1, 0, 0, 0, 0, 1, 0}  // 7
         };
-        Graph graph = new Graph(adj, adj.length);
+        Graph graph = new Graph(adjOne, adjOne.length);
         graph.printGraph();
         System.out.println("Incidence matrix:");
         MatrixPrinter.printMatrix(graph.writeIncidenceMatrix());
@@ -54,6 +54,63 @@ public class Main extends JPanel {
 
         System.out.println("\nColoring by manipulating rows in adjacency list");
         graph.coloringByManipulatingRows(graph.writeAdjacencyMatrix());
+
+
+        int[][] adjTwo = {
+                {0, 0, 0, 0, 0, 1, 1}, // 1
+                {0, 0, 1, 0, 1, 1, 0}, // 2
+                {0, 1, 0, 1, 0, 0, 0}, // 3
+                {0, 0, 1, 0, 1, 1, 0}, // 4
+                {0, 1, 0, 1, 0, 1, 0}, // 5
+                {1, 1, 0, 1, 1, 0, 1}, // 6
+                {1, 0, 0, 0, 0, 1, 0}  // 7
+        };
+        Graph graphTwo = new Graph(adjTwo, adjTwo.length);
+        graphTwo.printGraph();
+        System.out.println("Incidence matrix:");
+        MatrixPrinter.printMatrix(graphTwo.writeIncidenceMatrix());
+        System.out.println("\nAdjacency matrix:");
+        MatrixPrinter.printMatrix(graphTwo.writeAdjacencyMatrix());
+        System.out.println("\nAdjacency list:");
+        MatrixPrinter.printMatrix(graphTwo.writeAdjacencyList());
+        System.out.println("\nEdges list:");
+        MatrixPrinter.printEdgesArray(graphTwo.writeEdges());
+
+        System.out.println("\nVertices and edges:");
+        MatrixPrinter.printVerticesAndEdges(graphTwo.getVertices(), graphTwo.writeEdges());
+
+
+        System.out.println("\nDepth first search");
+        int indexVertexDFS = 1;
+        graphTwo.depthFirstSearch(graphTwo.writeAdjacencyList(), indexVertexDFS);
+
+        System.out.println("\nBreadth first search");
+        int indexVertexBFS = 1;
+        graphTwo.breadthFirstSearch(graphTwo.writeAdjacencyList(), indexVertexBFS);
+
+
+        int[][] adjThree = {
+                {0, 1, 0, 1}, // 1
+                {1, 0, 1, 1}, // 2
+                {0, 1, 0, 1}, // 3
+                {1, 1, 1, 0}  // 4
+        };
+        Graph graphThree = new Graph(adjThree, adjThree.length);
+        System.out.println("\nVertices and edges:");
+        MatrixPrinter.printVerticesAndEdges(graphThree.getVertices(), graphThree.writeEdges());
+        System.out.println("Incidence matrix:");
+        MatrixPrinter.printMatrix(graphThree.writeIncidenceMatrix());
+        System.out.println("\nAdjacency matrix:");
+        MatrixPrinter.printMatrix(graphThree.writeAdjacencyMatrix());
+        System.out.println("\nAdjacency list:");
+        MatrixPrinter.printMatrix(graphThree.writeAdjacencyList());
+        System.out.println("\nEdges list:");
+        MatrixPrinter.printEdgesArray(graphThree.writeEdges());
+        System.out.println("\nVertices and edges:");
+        MatrixPrinter.printVerticesAndEdges(graphThree.getVertices(), graphThree.writeEdges());
+
+        System.out.println("Edge coloring");
+        graphThree.edgeColoring(graphThree.getEdges());
     }
 
     @Override

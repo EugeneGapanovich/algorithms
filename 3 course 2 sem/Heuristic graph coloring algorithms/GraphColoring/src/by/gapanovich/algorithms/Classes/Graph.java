@@ -4,9 +4,7 @@ import by.gapanovich.algorithms.Printer.MatrixPrinter;
 import by.gapanovich.algorithms.validator.EdgeValidator;
 import by.gapanovich.algorithms.validator.GraphValidator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Graph {
     private final char[] LETTERS = {
@@ -289,7 +287,7 @@ public class Graph {
         return resultIndex;
     }
 
-    public char[] breadthFirstSearch(int[][] adjacencyMatrix) {
+    public char[] breadthFirstSearchAlgorithm(int[][] adjacencyMatrix) {
         char[] result = new char[this.vertices.length];
         int[] indexes = new int[this.vertices.length];
         int[][] matrix = adjacencyMatrix;
@@ -327,31 +325,93 @@ public class Graph {
         System.out.println();
     }
 
-    public void greedyColoring(int[][] adjacencyList) {
-        int[] colors = new int[this.vertices.length];
-        Arrays.fill(colors, -1);
-        List<List<Integer>> unavailableColorsVertex;
-        unavailableColorsVertex = new ArrayList<>(this.vertices.length);
-        for (int i = 0; i < this.vertices.length; i++) {
-            unavailableColorsVertex.add(new ArrayList<Integer>());
+    public void edgeColoring(Edge[] graphEdges) {
+        int[] colors;
+        int dimension = graphEdges.length;
+        int[][] newMatrix = new int[dimension][dimension];
+
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                if (i == j) {
+                    newMatrix[i][j] = 0;
+                } else {
+                    if (isEdgesAdjacency(graphEdges[i], graphEdges[j])) {
+                        newMatrix[i][j] = 1;
+                    } else {
+                        newMatrix[i][j] = 0;
+                    }
+                }
+            }
         }
 
-        int[][] degrees = new int[7][2];
-        for (int i = 0; i < this.vertices.length; i++) {
-            degrees[i][0] = adjacencyList[i][0];
-            degrees[i][1] = adjacencyList[i].length - 1;
+        Graph newGraph = new Graph(newMatrix, newMatrix.length);
+        colors = newGraph.greedyColoringReturnColors(newGraph.writeAdjacencyList());
+        for (int i = 0; i < graphEdges.length; i++){
+            System.out.println("Edge " + graphEdges[i].toString() + " - color ---> " + colors[i]);
         }
-        for (int i = 0; i < this.vertices.length; i++) {
-            int idMaxVertex = getIdVertexMaxDegree(degrees);
-            int color = getFirstAvailableColorVertex(unavailableColorsVertex, idMaxVertex);
-            setColorVertex(colors, idMaxVertex, color);
-            reduceDegreeAdjacentVertices(degrees, adjacencyList, idMaxVertex);
-            setUnavailableColors(unavailableColorsVertex, idMaxVertex, color, adjacencyList);
-        }
+    }
 
+    private boolean isEdgesAdjacency(Edge firstEdge, Edge secondEdge) {
+        if (firstEdge.getFromVertex().getName() == secondEdge.getFromVertex().getName() ||
+                firstEdge.getToVertex().getName() == secondEdge.getFromVertex().getName() ||
+                firstEdge.getFromVertex().getName() == secondEdge.getToVertex().getName() ||
+                firstEdge.getToVertex().getName() == secondEdge.getToVertex().getName()) {
+            return true;
+        }
+        return false;
+    }
+
+    public void breadthFirstSearch(int[][] adjacencyListMatrix, int indexVertex) {
+        LinkedList<Integer>[] adjacencyList = new LinkedList[this.vertices.length];
         for (int i = 0; i < this.vertices.length; i++) {
-            System.out.println("Vertex " + this.vertices[i].getName() + " --->  Color "
-                    + colors[i]);
+            adjacencyList[i] = new LinkedList();
+        }
+        for (int i = 0; i < this.vertices.length; i++) {
+            for (int j = 1; j < adjacencyListMatrix[i].length; j++) {
+                adjacencyList[i].add(adjacencyListMatrix[i][j]);
+            }
+        }
+        boolean[] visited = new boolean[this.vertices.length];
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+        visited[indexVertex] = true;
+        queue.add(indexVertex);
+        while (queue.size() != 0) {
+            indexVertex = queue.poll();
+            System.out.print(this.vertices[indexVertex].getName() + " ");
+            Iterator<Integer> i = adjacencyList[indexVertex].listIterator();
+            while (i.hasNext()) {
+                int nextIndexVertex = i.next() - 1;
+                if (!visited[nextIndexVertex]) {
+                    visited[nextIndexVertex] = true;
+                    queue.add(nextIndexVertex);
+                }
+            }
+        }
+    }
+
+    public void depthFirstSearch(int[][] adjacencyListMatrix, int indexVertex) {
+        LinkedList<Integer>[] adjacencyList = new LinkedList[this.vertices.length];
+        for (int i = 0; i < this.vertices.length; i++) {
+            adjacencyList[i] = new LinkedList();
+        }
+        for (int i = 0; i < this.vertices.length; i++) {
+            for (int j = 1; j < adjacencyListMatrix[i].length; j++) {
+                adjacencyList[i].add(adjacencyListMatrix[i][j]);
+            }
+        }
+        boolean[] visited = new boolean[this.vertices.length];
+        depthFirstSearchUtil(indexVertex, visited, adjacencyList);
+    }
+
+    private void depthFirstSearchUtil(int vertex, boolean[] visited, LinkedList<Integer>[] adjacencyList) {
+        visited[vertex] = true;
+        System.out.print(this.vertices[vertex].getName() + " ");
+
+        Iterator<Integer> i = adjacencyList[vertex].listIterator();
+        while (i.hasNext()) {
+            int nextIndexVertex = i.next() - 1;
+            if (!visited[nextIndexVertex])
+                depthFirstSearchUtil(nextIndexVertex, visited, adjacencyList);
         }
     }
 
@@ -372,8 +432,8 @@ public class Graph {
         boolean continueCycle = true;
 
         for (int i = 0; i < this.vertices.length; i++) {
-            if(availableRows[i]){
-                while(isExistZeroInRow(adjacencyMatrix,i) && continueCycle) {
+            if (availableRows[i]) {
+                while (isExistZeroInRow(adjacencyMatrix, i) && continueCycle) {
                     int j = getIndexZeroInRow(adjacencyMatrix, i);
                     if (availableRows[j]) {
                         for (int k = 0; k < this.vertices.length; k++) {
@@ -402,19 +462,72 @@ public class Graph {
 
     }
 
-    private boolean isExistZeroInRow(int[][] adjacencyMatrix, int indexRow){
-        for (int i = 0; i < this.vertices.length; i++){
-            if(adjacencyMatrix[indexRow][i] == 0){
+    private boolean isExistZeroInRow(int[][] adjacencyMatrix, int indexRow) {
+        for (int i = 0; i < this.vertices.length; i++) {
+            if (adjacencyMatrix[indexRow][i] == 0) {
                 return true;
             }
         }
         return false;
     }
 
-    private int getIndexZeroInRow(int[][] adjacencyMatrix, int indexRow){
+    public int[] greedyColoringReturnColors(int[][] adjacencyList) {
+        int[] colors = new int[this.vertices.length];
+        Arrays.fill(colors, -1);
+        List<List<Integer>> unavailableColorsVertex;
+        unavailableColorsVertex = new ArrayList<>(this.vertices.length);
+        for (int i = 0; i < this.vertices.length; i++) {
+            unavailableColorsVertex.add(new ArrayList<Integer>());
+        }
+
+        int[][] degrees = new int[7][2];
+        for (int i = 0; i < this.vertices.length; i++) {
+            degrees[i][0] = adjacencyList[i][0];
+            degrees[i][1] = adjacencyList[i].length - 1;
+        }
+        for (int i = 0; i < this.vertices.length; i++) {
+            int idMaxVertex = getIdVertexMaxDegree(degrees);
+            int color = getFirstAvailableColorVertex(unavailableColorsVertex, idMaxVertex);
+            setColorVertex(colors, idMaxVertex, color);
+            reduceDegreeAdjacentVertices(degrees, adjacencyList, idMaxVertex);
+            setUnavailableColors(unavailableColorsVertex, idMaxVertex, color, adjacencyList);
+        }
+
+        return colors;
+    }
+
+    public void greedyColoring(int[][] adjacencyList) {
+        int[] colors = new int[this.vertices.length];
+        Arrays.fill(colors, -1);
+        List<List<Integer>> unavailableColorsVertex;
+        unavailableColorsVertex = new ArrayList<>(this.vertices.length);
+        for (int i = 0; i < this.vertices.length; i++) {
+            unavailableColorsVertex.add(new ArrayList<Integer>());
+        }
+
+        int[][] degrees = new int[7][2];
+        for (int i = 0; i < this.vertices.length; i++) {
+            degrees[i][0] = adjacencyList[i][0];
+            degrees[i][1] = adjacencyList[i].length - 1;
+        }
+        for (int i = 0; i < this.vertices.length; i++) {
+            int idMaxVertex = getIdVertexMaxDegree(degrees);
+            int color = getFirstAvailableColorVertex(unavailableColorsVertex, idMaxVertex);
+            setColorVertex(colors, idMaxVertex, color);
+            reduceDegreeAdjacentVertices(degrees, adjacencyList, idMaxVertex);
+            setUnavailableColors(unavailableColorsVertex, idMaxVertex, color, adjacencyList);
+        }
+
+        for (int i = 0; i < this.vertices.length; i++) {
+            System.out.println("Vertex " + this.vertices[i].getName() + " --->  Color "
+                    + colors[i]);
+        }
+    }
+
+    private int getIndexZeroInRow(int[][] adjacencyMatrix, int indexRow) {
         int index = -1;
-        for (int i = 0; i < this.vertices.length; i++){
-            if(adjacencyMatrix[indexRow][i] == 0){
+        for (int i = 0; i < this.vertices.length; i++) {
+            if (adjacencyMatrix[indexRow][i] == 0) {
                 index = i;
                 break;
             }
@@ -486,6 +599,4 @@ public class Graph {
         }
         return exist;
     }
-
-
 }
