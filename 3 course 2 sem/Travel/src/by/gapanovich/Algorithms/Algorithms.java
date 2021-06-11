@@ -1,4 +1,4 @@
-package by.gapanivich.Algorithms;
+package by.gapanovich.Algorithms;
 
 import java.util.ArrayList;
 import java.util.Arrays;

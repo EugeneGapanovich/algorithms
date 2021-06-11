@@ -1,6 +1,6 @@
-package by.gapanivich.Main;
+package by.gapanovich.Main;
 
-import by.gapanivich.Algorithms.Algorithms;
+import by.gapanovich.Algorithms.Algorithms;
 
 public class Main {
     public static void main(String[] args) {
